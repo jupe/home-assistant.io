@@ -5,7 +5,7 @@ ha_category:
   - Camera
 logo: home-assistant.png
 ha_release: pre 0.7
-ha_iot_class: Configurable
+ha_iot_class: Local Push
 ha_domain: generic
 ha_platforms:
   - camera
@@ -71,10 +71,14 @@ verify_ssl:
   required: false
   default: true
   type: boolean
+rtsp_transport:
+  description: "Set the RTSP transport protocol to `tcp`, `udp`, `udp_multicast` or `http`."
+  required: false
+  type: string
 {% endconfiguration %}
 
 <p class='img'>
-  <a href='/cookbook/google_maps_card/'>
+  <a href='/examples/google_maps_card/'>
     <img src='/images/integrations/camera/generic-google-maps.png' alt='Screenshot showing Google Maps integration in Home Assistant front end.'>
     Example showing the Generic camera platform pointing at a dynamic Google Map image.
   </a>

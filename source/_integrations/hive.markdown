@@ -22,42 +22,27 @@ ha_platforms:
   - sensor
   - switch
   - water_heater
+ha_config_flow: true
 ---
 
-The `hive` integration is the main integration to set up and integrate all supported Hive devices. Once configured with the minimum required details it will detect and add all Hive devices into Home Assistant, including support for multi-zone heating.
+The Hive integration for Home Assistant allows you to interact with supported devices and services offered by
+[hivehome.com](https://www.hivehome.com)
 
-This integration uses the  Hive website [https://my.hivehome.com](https://my.hivehome.com) credentials, you will need to use the same username and password you use on the Hive website to configure this Hive integration in Home Assistant.
+This Hive integration uses the same username and password you use on the [Hive website](https://sso.hivehome.com) to configure it within Home Assistant, 2FA authentication is also supported. Once configured Home Assistant will detect and add all Hive devices, including support for multi-zone heating.
 
-To add your Hive devices into your Home Assistant installation, add the following to your `configuration.yaml` file:
+{% include integrations/config_flow.md %}
 
-```yaml
-# Example configuration.yaml entry
-hive:
-  username: YOUR_USERNAME
-  password: YOUR_PASSWORD
-```
+## Options
 
-{% configuration %}
-username:
-  description: Your username from [https://my.hivehome.com](https://my.hivehome.com).
-  required: true
-  type: string
-password:
-  description: Your password from [https://my.hivehome.com](https://my.hivehome.com).
-  required: true
-  type: string
-scan_interval:
-  description: The time in minutes between Hive API calls
-  required: false
-  type: integer
-  default: 2
-{% endconfiguration %}
+Menu: *Configuration* > *Integrations* > *Select your new integration* > *Press the options button*
 
+- **Scan Interval**: Update the scan interval allowing the integration to poll for data more frequently (Cannot be set lower than 30 seconds).
+  
 ## Services
 
-### Service `hive.boost_heating`
+### Service `hive.boost_heating_on`
 
-You can use the service `hive.boost_heating` to set your heating to boost for a period of time at a certain target temperature". Individual TRVs can also be boosted in the same way, using this service.
+You can use the service `hive.boost_heating_on` to set your heating to boost for a period of time at a certain target temperature". Individual TRVs can also be boosted in the same way, using this service.
 
 | Service data attribute | Optional | Description                                                            |
 | ---------------------- | -------- | ---------------------------------------------------------------------- |
@@ -72,12 +57,32 @@ Examples:
 script:
   boost_heating:
     sequence:
-      - service: hive.boost_heating
+      - service: hive.boost_heating_on
         target:
           entity_id: "climate.heating"
         data:
           time_period: "01:30:00"
           temperature: "20.5"
+```
+
+### Service `hive.boost_heating_off`
+
+You can use the service `hive.boost_heating_off` to set your heating to boost for a period of time at a certain target temperature". Individual TRVs can also be boosted in the same way, using this service.
+
+| Service data attribute | Optional | Description                                    |
+| ---------------------- | -------- | ---------------------------------------------- |
+| `entity_id`            | no       | String, Name of entity e.g., `climate.heating` |
+
+Examples:
+
+```yaml
+# Example script to boost heating, boost period and target temperature specified.
+script:
+  boost_heating:
+    sequence:
+      - service: hive.boost_heating_off
+        target:
+          entity_id: "climate.heating"
 ```
 
 ### Service `hive.boost_hot_water`
@@ -159,6 +164,7 @@ The `hive` switch platform integrates your Hive plugs into Home Assistant, enabl
 The platform supports the following Hive products:
 
 - Hive Active Plug
+- Hive Heat on Demand
 
 ### Water Heater
 

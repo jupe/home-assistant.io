@@ -92,7 +92,7 @@ current_temperature_topic:
   required: false
   type: string
 device:
-  description: 'Information about the device this HVAC device is a part of to tie it into the [device registry](https://developers.home-assistant.io/docs/en/device_registry_index.html). Only works through [MQTT discovery](/docs/mqtt/discovery/) and when [`unique_id`](#unique_id) is set.'
+  description: 'Information about the device this HVAC device is a part of to tie it into the [device registry](https://developers.home-assistant.io/docs/en/device_registry_index.html). Only works through [MQTT discovery](/docs/mqtt/discovery/) and when [`unique_id`](#unique_id) is set. At least one of identifiers or connections must be present to identify the device.'
   required: false
   type: map
   keys:
@@ -116,6 +116,10 @@ device:
       description: 'The name of the device.'
       required: false
       type: string
+    suggested_area:
+      description: 'Suggest an area if the device isn’t in one yet.'
+      required: false
+      type: string
     sw_version:
       description: 'The firmware version of the device.'
       required: false
@@ -124,6 +128,11 @@ device:
       description: 'Identifier of a device that routes messages between this device and Home Assistant. Examples of such devices are hubs, or parent devices of a sub-device. This is used to show device topology in Home Assistant.'
       required: false
       type: string
+enabled_by_default:
+  description: Flag which defines if the entity should be enabled when first added.
+  required: false
+  type: boolean
+  default: true
 fan_mode_command_template:
   description: A template to render the value sent to the `fan_mode_command_topic` with.
   required: false
@@ -170,6 +179,10 @@ initial:
   required: false
   type: integer
   default: 21
+icon:
+  description: "[Icon](/docs/configuration/customizing-devices/#icon) for the entity."
+  required: false
+  type: icon
 json_attributes_template:
   description: "Defines a [template](/docs/configuration/templating/#processing-incoming-data) to extract the JSON dictionary from messages received on the `json_attributes_topic`. Usage example can be found in [MQTT sensor](/integrations/sensor.mqtt/#json-attributes-template-configuration) documentation."
   required: false
@@ -350,7 +363,7 @@ If a property works in *optimistic mode* (when the corresponding state topic is 
 
 #### Using Templates
 
-For all `*_state_topic`s, a template can be specified that will be used to render the incoming payloads on these topics. Also, a default template that applies to all state topis can be specified as `value_template`. This can be useful if you received payloads are e.g., in JSON format. Since in JSON, a quoted string (e.g., `"foo"`) is just a string, this can also be used for unquoting.
+For all `*_state_topic`s, a template can be specified that will be used to render the incoming payloads on these topics. Also, a default template that applies to all state topics can be specified as `value_template`. This can be useful if you received payloads are e.g., in JSON format. Since in JSON, a quoted string (e.g., `"foo"`) is just a string, this can also be used for unquoting.
 
 Say you receive the operation mode `"auto"` via your `mode_state_topic`, but the mode is actually called just `auto`, here's what you could do:
 

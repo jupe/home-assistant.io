@@ -15,6 +15,7 @@ ha_domain: tplink
 ha_platforms:
   - light
   - switch
+ha_dhcp: true
 ---
 
 The `tplink` integration allows you to control your [TP-Link Smart Home Devices](https://www.tp-link.com/kasa-smart/) such as smart plugs and smart bulbs.
@@ -59,6 +60,8 @@ Plugs are type `switch` when autodiscovery has been disabled.
 
 ### Bulbs
 
+Other bulbs may also work, but with limited color temperatures. If you find a bulb isn't reaching the full-color temperature boundaries, submit a bug report. Bulbs do generally report some energy consumption information, see the entity state attributes to find out what information is available.
+
 - LB100
 - LB110
 - LB120
@@ -66,7 +69,9 @@ Plugs are type `switch` when autodiscovery has been disabled.
 - LB230
 - KL110
 - KL120
+- KL125
 - KL130
+- KB130
 
 ## Configuration
 
@@ -145,6 +150,7 @@ Devices that are confirmed to support Consumption Reading;
 1. HS110
 2. HS300
 3. KP115
+4. Bulbs (device-specific, only current power consumption is commonly available)
 
 In order to get the power consumption readings from a TP-Link HS110 device, you'll have to create a [template sensor](/integrations/template/).
 In the example below, change all of the `my_tp_switch`'s to match your device's entity ID (without the domain). For example, if your entity is `switch.whale_heater` then replace `my_tp_switch` with `whale_heater`:
@@ -157,23 +163,23 @@ sensor:
     sensors:
       my_tp_switch_amps:
         friendly_name_template: "{{ state_attr('switch.my_tp_switch','friendly_name') }} Current"
-        value_template: "{{ state_attr('switch.my_tp_switch','current_a') | float }}"
+        value_template: "{{ state_attr('switch.my_tp_switch','current_a') }}"
         unit_of_measurement: "A"
       my_tp_switch_watts:
         friendly_name_template: "{{ state_attr('switch.my_tp_switch','friendly_name') }} Current Consumption"
-        value_template: "{{ state_attr('switch.my_tp_switch','current_power_w') | float }}"
+        value_template: "{{ state_attr('switch.my_tp_switch','current_power_w') }}"
         unit_of_measurement: "W"
       my_tp_switch_total_kwh:
         friendly_name_template: "{{ state_attr('switch.my_tp_switch','friendly_name') }} Total Consumption"
-        value_template: "{{ state_attr('switch.my_tp_switch','total_energy_kwh') | float }}"
+        value_template: "{{ state_attr('switch.my_tp_switch','total_energy_kwh') }}"
         unit_of_measurement: "kWh"
       my_tp_switch_volts:
         friendly_name_template: "{{ state_attr('switch.my_tp_switch','friendly_name') }} Voltage"
-        value_template: "{{ state_attr('switch.my_tp_switch','voltage') | float }}"
+        value_template: "{{ state_attr('switch.my_tp_switch','voltage') }}"
         unit_of_measurement: "V"
       my_tp_switch_today_kwh:
         friendly_name_template: "{{ state_attr('switch.my_tp_switch','friendly_name') }} Today's Consumption"
-        value_template: "{{ state_attr('switch.my_tp_switch','today_energy_kwh') | float }}"
+        value_template: "{{ state_attr('switch.my_tp_switch','today_energy_kwh') }}"
         unit_of_measurement: "kWh"
 ```
 

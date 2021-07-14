@@ -8,6 +8,7 @@ ha_category:
   - Water Heater
   - Presence Detection
   - Sensor
+  - Weather
 ha_release: 0.41
 ha_iot_class: Cloud Polling
 ha_codeowners:
@@ -23,6 +24,7 @@ ha_platforms:
   - device_tracker
   - sensor
   - water_heater
+ha_dhcp: true
 ---
 
 The Tado integration platform is used as an interface to the [my.tado.com](https://my.tado.com/) website.
@@ -34,6 +36,7 @@ There is currently support for the following device types within Home Assistant:
 - Water Heater - for water heater zones.
 - [Presence Detection](#presence-detection)
 - Sensor - for some additional information of the zones.
+- Weather - for information about the current weather at the location of your Tado home.
 
 {% include integrations/config_flow.md %}
 
@@ -68,7 +71,7 @@ password:
   required: true
   type: string
 home_id:
-  description: The id of your home of which you want to track devices. If provided, the Tado device tracker will tack *all* devices known to Tado associated with this home. See below how to find it.
+  description: The id of your home of which you want to track devices. If provided, the Tado device tracker will track *all* devices known to Tado associated with this home. See below how to find it.
   required: false
   type: integer
 {% endconfiguration %}

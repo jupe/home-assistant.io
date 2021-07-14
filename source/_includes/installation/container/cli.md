@@ -6,11 +6,12 @@
     ```bash
     docker run --init -d \
       --name homeassistant \
+      --privileged \
       --restart=unless-stopped \
       -v /etc/localtime:/etc/localtime:ro \
       -v /PATH_TO_YOUR_CONFIG:/config \
       --network=host \
-      {{ include.image }}
+      {{ include.image | default: site.installation.container.base }}:{{ include.tag | default: 'stable' }}
     ```
 
 - title: Update
@@ -18,7 +19,7 @@
 
     ```bash
     # if this returns "Image is up to date" then you can stop here
-    docker pull {{ include.image }}
+    docker pull {{ include.image | default: site.installation.container.base }}:{{ include.tag | default: 'stable' }}
     ```
 
     ```bash
@@ -36,10 +37,11 @@
     docker run --init -d \
       --name homeassistant \
       --restart=unless-stopped \
+      --privileged \
       -v /PATH_TO_YOUR_CONFIG:/config \
       -v /etc/localtime:/etc/localtime:ro \
       --network=host \
-      {{ include.image }}
+      {{ include.image | default: site.installation.container.base }}:{{ include.tag | default: 'stable' }}
     ```
 
 {% endtabbed_block %}
